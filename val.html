@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Important Question</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #ffd6e7;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .card {
+        background: white;
+        padding: 25px;
+        width: 320px;
+        text-align: center;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    h2 {
+        margin-top: 0;
+    }
+
+    #counter {
+        margin: 15px 0;
+        font-size: 14px;
+        color: #444;
+        min-height: 20px;
+    }
+
+    button {
+        width: 100px;
+        padding: 10px;
+        margin: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    #yes {
+        background: #ff5c8a;
+        color: white;
+    }
+
+    #no {
+        background: #ddd;
+    }
+
+    .popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.4);
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popup-box {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        width: 280px;
+        text-align: center;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>Will you be my Valentine?</h2>
+
+    <div id="counter"></div>
+
+    <button id="yes">Yes</button>
+    <button id="no">No</button>
+</div>
+
+<div class="popup" id="popup">
+    <div class="popup-box">
+        <p id="popup-text"></p>
+        <button onclick="closePopup()">Okay</button>
+    </div>
+</div>
+
+<script>
+    const noMessages = [
+        "sab dekh raha hoon mai.",
+    	"are you sure that's what you want?",
+    	"that kinda hurts...",
+    	"okay wow. rude.",
+    	"i thought we had something :(",
+    	"seriously sharara?",
+    	"i need icecream or some shit this is depressing.",
+    	"ok bas bohot ho gaya."
+    ];
+
+    let index = 0;
+    let started = false;
+
+    const counter = document.getElementById("counter");
+    const yesBtn = document.getElementById("yes");
+    const noBtn = document.getElementById("no");
+    const popup = document.getElementById("popup");
+    const popupText = document.getElementById("popup-text");
+
+    function updateCounter() {
+        const remaining = noMessages.length - index;
+        counter.textContent = `Hmm, maybe you have ${remaining} small reasons to consider No.`;
+    }
+
+    function showPopup(text) {
+        popupText.textContent = text;
+        popup.style.display = "flex";
+    }
+
+    function closePopup() {
+        popup.style.display = "none";
+    }
+
+    yesBtn.onclick = () => {
+        if (!started) {
+            started = true;
+            updateCounter();
+            return;
+        }
+
+        if (index < noMessages.length) {
+            return;
+        }
+
+        counter.textContent = "phas gayi 😛 thankyou for saying yes sharara.";
+        yesBtn.disabled = true;
+        noBtn.disabled = true;
+    };
+
+    noBtn.onclick = () => {
+        if (!started || index >= noMessages.length) return;
+
+        showPopup(noMessages[index]);
+        index++;
+
+        if (index < noMessages.length) {
+            updateCounter();
+        } else {
+            counter.textContent = "It seems there are no reasons left to say No.";
+            noBtn.style.display = "none";
+        }
+    };
+</script>
+
+</body>
+</html>
